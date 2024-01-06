@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function(){
     //Update counter
     const counter = document.querySelector('#counter')
     let count = 0;
-    const intervalId = setInterval(updateCounter,1000)
+    let intervalId = setInterval(updateCounter,1000)
     function updateCounter(){
         count ++
         counter.textContent = count
@@ -40,8 +40,30 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementById(count).innerText = `${count} has been liked ${likes[count]} times`
         }
     }
-    //Attach the click event listener to the heart button
     heartButton.addEventListener('click', postHeartClickInfo)
+
+    //Pause Button
+    const pauseButton = document.querySelector('#pause')
+    pauseButton.addEventListener('click', pauseStuff)
+    function pauseStuff(){
+        if(pauseButton.innerText === 'pause'){
+            pauseButton.innerText = 'resume'
+            clearInterval(intervalId)
+            document.querySelectorAll('button').forEach(element =>{
+                if(element.id !== 'pause'){
+                    element.disabled = true
+                }
+            })
+        }else{
+            pauseButton.innerText = 'pause'
+            intervalId = setInterval(updateCounter,1000)
+            document.querySelectorAll('button').forEach(element =>{
+                if(element.id !== 'pause'){
+                    element.disabled = false
+                }
+            })
+        }
+    }
 
     //Comment box that adds comments when submitted
     document.querySelector('#comment-form').addEventListener('submit', addComment)
